@@ -1,0 +1,1 @@
+Question = [["Are lists part of python data structure? "], ["Are for loops and while loops the same? "], ["is .append, .join, .remove part of built-in function? "]]
