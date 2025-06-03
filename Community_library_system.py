@@ -23,7 +23,6 @@ print(hello)
 class Library:
      def __init__(self, book_list):
          self.book_list = book_list
-         
 
      def find_book_by_author(self, keyword):
          keyword = keyword.lower()
@@ -41,6 +40,24 @@ book_list = {
         "Think like a man" : "ntsako",
         "The psychology of money" : "titi",
      }
+
+if __name__ == "__main__":
+    library = Library()
+
+    library.add_book("Le gae", "Charmaine")
+    library.add_book("nothing but the truth", "Pro")
+    library.add_book("48 laws of power", "Tsitso" )
+    library.add_book("think like a man", "ntsako")
+    library.add_book("The psychology of money", "Titi")
+
+    print("Le gae':")
+    for book in library.find_books_by_title("Le gae"):
+        print(book)
+
+    print("\nBooks by author 'Charmaine':")
+    for book in library.find_books_by_author("Charmaine"):
+        print(book)
+
 
 Library = Library(book_list)
 found_books = Library.find_book_by_author("Pro")
