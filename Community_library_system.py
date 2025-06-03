@@ -13,7 +13,7 @@ class Book:
             return f"'{self.title}' has been lent to {out_to_user}."
         else:
             return f"'{self.title}' is currently not available."
-
+        
 My_book = Book("surrounded by idiots", "Le Hao", "1254-95478")
 
 hello = My_book.lend("Oletilwe")
@@ -21,11 +21,19 @@ print(hello)
 
 
 class Library:
-     def __init__(self, author, title, book_list):
-         self.author = author
-         self.title = title
+     def __init__(self, book_list):
          self.book_list = book_list
          
+
+     def find_book_by_author(self, keyword):
+         keyword = keyword.lower()
+         results = []
+         for title, author in self.book_list.items():
+             if author.lower() == keyword:
+                 results.append(title)
+         return results
+    
+
 book_list = {
         "nothing but the truth" : "Pro",
         "Le gae" : " charmaine",
@@ -33,9 +41,7 @@ book_list = {
         "Think like a man" : "ntsako",
         "The psychology of money" : "titi",
      }
-         
-    # def find_book_by_author(self, keyword):
-    #     for book in book_list:
-    #         if book in book_list:
-    #             keyword.lower 
-    #         return book
+
+Library = Library(book_list)
+found_books = Library.find_book_by_author("Pro")
+print(found_books)
