@@ -3,62 +3,71 @@ class Book:
         self.title = title
         self.author = author
         self.isbn = isbn
-        self.is_available = True
-        self.borrow_by = None
-
-    def lend(self, out_to_user):
-        if self.is_available:
-            self.is_available = False
-            self.borrow_by = out_to_user
-            return f"'{self.title}' has been lent to {out_to_user}."
-        else:
-            return f"'{self.title}' is currently not available."
-        
-My_book = Book("surrounded by idiots", "Le Hao", "1254-95478")
-
-hello = My_book.lend("Oletilwe")
-print(hello)
-
+        self.available = True
 
 class Library:
-     def __init__(self, book_list):
-         self.book_list = book_list
+    def __init__(self):
+        self.books = {}
 
-     def find_book_by_author(self, keyword):
-         keyword = keyword.lower()
-         results = []
-         for title, author in self.book_list.items():
-             if author.lower() == keyword:
-                 results.append(title)
-         return results
-    
+    def add_book(self, book):
+        self.books[book.isbn] = book
 
-book_list = {
-        "nothing but the truth" : "Pro",
-        "Le gae" : " charmaine",
-        "48 Laws of power" : "Tsitso",
-        "Think like a man" : "ntsako",
-        "The psychology of money" : "titi",
-     }
+    def search_by_title(self, keyword):
+        return [book for book in self.books.values() if keyword.lower() in book.title.lower()]
+
+    def search_by_author(self, keyword):
+        return [book for book in self.books.values() if keyword.lower() in book.author.lower()]
+
+    def checkout(self, isbn):
+        if isbn in self.books and self.books[isbn].available:
+            self.books[isbn].available = False
+            print(f"{self.books[isbn].title} checked out")
+        else:
+            print("Book not available")
+
+    def return_book(self, isbn):
+        if isbn in self.books and not self.books[isbn].available:
+            self.books[isbn].available = True
+            print(f"{self.books[isbn].title} returned")
+        else:
+            print("Book is already available")
+
+def main():
+    library = Library()
+    while True:
+        print("\n1. Add Book")
+        print("2. Search by Title")
+        print("3. Search by Author")
+        print("4. Checkout")
+        print("5. Return")
+        print("6. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            title = input("Enter title: ")
+            author = input("Enter author: ")
+            isbn = input("Enter ISBN: ")
+            library.add_book(Book(title, author, isbn))
+        elif choice == "2":
+            keyword = input("Enter keyword: ")
+            books = library.search_by_title(keyword)
+            for book in books:
+                print(book.title)
+        elif choice == "3":
+            keyword = input("Enter keyword: ")
+            books = library.search_by_author(keyword)
+            for book in books:
+                print(book.title)
+        elif choice == "4":
+            isbn = input("Enter ISBN: ")
+            library.checkout(isbn)
+        elif choice == "5":
+            isbn = input("Enter ISBN: ")
+            library.return_book(isbn)
+        elif choice == "6":
+            break
+        else:
+            print("Invalid option")
 
 if __name__ == "__main__":
-    library = Library()
-
-    library.add_book("Le gae", "Charmaine")
-    library.add_book("nothing but the truth", "Pro")
-    library.add_book("48 laws of power", "Tsitso" )
-    library.add_book("think like a man", "ntsako")
-    library.add_book("The psychology of money", "Titi")
-
-    print("Le gae':")
-    for book in library.find_books_by_title("Le gae"):
-        print(book)
-
-    print("\nBooks by author 'Charmaine':")
-    for book in library.find_books_by_author("Charmaine"):
-        print(book)
-
-
-Library = Library(book_list)
-found_books = Library.find_book_by_author("Pro")
-print(found_books)
+    main()
