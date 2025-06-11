@@ -47,31 +47,48 @@ class Inventory:
         return None
 
     def restock(self, name, amount):
+        # this finds the product from all the products by name. 
         product = self.find_product_by_name(name)
         if product:
+            # if there is new stock, +=(Increment == add) the new number of 
+            # stock to the one we already have. 
             product.stock += amount
+            # it will print the product name has restocked successfully. 
             print(f"Product {name} restocked successfully.")
         else:
+            # else the product was not found in the catalog
             print(f"Product {name} not found in the catalog.")
 
     def search(self, name=None):
+        # empthy list called results
         results = []
         for product in self.catalog:
+            # this checks if the name and product name is in lowercase and the name of the product
+            # starts with a lowercase 
             if name and product.name.lower().startswith(name.lower()):
+                # add that product to results
                 results.append(product)
+                # returns results. 
         return results
 
 
 def process_order(inventory, order_list):
+    #Check quantity of the product
     total = 0
+    # This will change as the amount of sales increase. 
     for product_name, quantity in order_list:
         product = inventory.find_product_by_name(product_name)
+        # if the product is there
         if product:
+            # the product will try and be sold
             try:
                 revenue = product.sell(quantity)
+                # the total will be incremented
                 total += revenue
+                # it will print the amount of product name sold and the amount of remaining stock. 
                 print(f"Sold {quantity} units of {product_name}. Remaining stock: {product.stock}")
             except ValueError as e:
+                # if an error comes up it will raise an error. 
                 print(f"Error processing order for {product_name}: {e}")
         else:
             print(f"Product {product_name} not found in the catalog.")
@@ -79,6 +96,7 @@ def process_order(inventory, order_list):
 
 
 def main():
+    # uses the inventory class
     inventory = Inventory()
 
     apple = Product("Apple", 1.00, 100)
@@ -97,7 +115,7 @@ def main():
     for i, order in enumerate(orders):
         print(f"Processing Order {i+1}:")
         total = process_order(inventory, order)
-        print(f"Order Total: ${total:.2f}\n")
+        print(f"Order Total: R{total:.2f}\n")
 
     inventory.restock("Apple", 50)
     print(f"Apple stock after restocking: {inventory.find_product_by_name('Apple').stock}")
