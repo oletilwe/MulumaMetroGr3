@@ -1,39 +1,49 @@
+# created a class called product. 
 class Product:
+    #initialize the class
     def __init__(self, name, price, stock):
         self.name = name
         self.price = price
         self.stock = stock
 
-    def sell(self, quantity):
+    def sell(self, quantity): # sell function
+        # it checks if the users stated quantity is more then the stock in hand. 
         if quantity > self.stock:
+            # if thats the case it raises an error stating that the stock isnt enough
             raise ValueError("Not enough stock to fulfill the order")
         self.stock -= quantity
+        # here if the stock is enough the customers quantity is minused from the stock 
         return self.price * quantity
+    # this returns the price of the one product multiply by the quantity of the products. 
 
 
+# class called electronics that inherites the product class
 class Electronics(Product):
     def __init__(self, name, price, stock, warranty_years):
         super().__init__(name, price, stock)
         self.warranty_years = warranty_years
 
-
+# this also inherits the product class
 class Book(Product):
     def __init__(self, name, price, stock, author):
         super().__init__(name, price, stock)
         self.author = author
 
-
+# new class with no inheritens called inventory
 class Inventory:
     def __init__(self):
         self.catalog = []
-
+# this function(method) adds a new product to the products already available using the .append function. 
     def add_product(self, product):
         self.catalog.append(product)
 
     def find_product_by_name(self, name):
+        # a for loop that looks for the specific product in the catalog. 
         for product in self.catalog:
             if product.name.lower() == name.lower():
+                # if the product that is in lowercase is there, it returns the product. 
                 return product
+            # else it returns nothing cause the product isnt there. 
         return None
 
     def restock(self, name, amount):
